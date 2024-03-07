@@ -31,11 +31,19 @@ const fetchUserData = async (isLogin: boolean) => {
   }
 };
 
+// notice: JS can't access http-only cookies
+function checkCookieExists(cookieName: string): boolean {
+  // Split document.cookie on semicolons and trim each item
+  const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+  // Check if any cookie string starts with the cookie name followed by an equals sign
+  return cookies.some(cookie => cookie.startsWith(`${cookieName}=`));
+}
+
 function App() {
   const [user, setUser] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(checkCookieExists('access_token'));
 
   useEffect(() => {
     fetchLogin()
