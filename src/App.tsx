@@ -44,6 +44,7 @@ function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isLogin, setIsLogin] = useState(checkCookieExists('access_token'));
+  const [logoutStatus, setLogoutStatus] = useState<string>('');
 
   useEffect(() => {
     fetchLogin()
@@ -60,6 +61,25 @@ function App() {
     }
   }, [isLogin]);
 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/logout', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        setLogoutStatus('Logout successful');
+      } else {
+        setLogoutStatus('Logout failed. Please try again.');
+      }
+    } catch (error) {
+      setLogoutStatus(`Logout error: ${error}`);
+    }
+  }
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!user) return <div>No user data found.</div>;
@@ -67,6 +87,8 @@ function App() {
   return (
       <div>
         <h1>{user}</h1>
+        <button onClick={handleLogout}>Logout</button>
+        {logoutStatus && <div>{logoutStatus}</div>}
       </div>
   );
 }
