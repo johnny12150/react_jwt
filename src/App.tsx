@@ -44,10 +44,12 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetchUserData(isLogin)
-        .then(setUser)
-        .catch((error) => setError(error.message))
-        .finally(() => setLoading(false));
+    if (isLogin) {  // Avoid calling this before signup
+      fetchUserData(isLogin)
+          .then(setUser)
+          .catch((error) => setError(error.message))
+          .finally(() => setLoading(false));
+    }
   }, [isLogin]);
 
   if (loading) return <div>Loading...</div>;
