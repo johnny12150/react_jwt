@@ -4,12 +4,13 @@ import axios from 'axios';
 
 const fetchLogin = async () => {
   try {
-    // add {credentials: 'include'} to set cookie
+    // add { withCredentials: true } to set cookie
     const response = await axios('http://localhost:4000/test_signup', { withCredentials: true });
     if (!response) {
       throw new Error('Network response was not ok');
     }
     const token = await response.data;
+    console.log(response.headers['set-cookie']);  // check cookie exist
     return 'token' in token;
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error);
@@ -19,11 +20,11 @@ const fetchLogin = async () => {
 
 const fetchUserData = async (isLogin: boolean) => {
   try {
-    const response = await fetch('http://localhost:4000/login', {credentials: 'include'});
-    if (!response.ok) {
+    const response = await axios('http://localhost:4000/login', { withCredentials: true });
+    if (!response) {
       throw new Error('Network response was not ok');
     }
-    const user_data = await response.json();
+    const user_data = await response.data;
     return user_data.res_;
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error);
