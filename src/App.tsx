@@ -1,14 +1,15 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const fetchLogin = async () => {
   try {
     // add {credentials: 'include'} to set cookie
-    const response = await fetch('http://localhost:4000/test_signup', {credentials: 'include'});
-    if (!response.ok) {
+    const response = await axios('http://localhost:4000/test_signup', { withCredentials: true });
+    if (!response) {
       throw new Error('Network response was not ok');
     }
-    const token = await response.json();
+    const token = await response.data;
     return 'token' in token;
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error);
