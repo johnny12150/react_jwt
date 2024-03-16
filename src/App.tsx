@@ -6,7 +6,6 @@ const fetchLogin = async () => {
     // add {credentials: 'include'} to set cookie
     const response = await fetch('http://localhost:4000/test_signup', {credentials: 'include'});
     if (!response.ok) {
-      console.log(response);
       throw new Error('Network response was not ok');
     }
     const token = await response.json();
