@@ -12,6 +12,9 @@ function createWindow() {
         }
     });
 
+    // Open the DevTools.
+    mainWindow.webContents.openDevTools();
+
     mainWindow.loadURL(`file://${path.join(__dirname, "/build/index.html")}`);
     // mainWindow.loadURL('http://localhost:3000');
 
