@@ -18,7 +18,7 @@ const fetchLogin = async () => {
   }
 };
 
-const fetchUserData = async (isLogin: boolean) => {
+const fetchUserData = async () => {
   try {
     const response = await axios('http://localhost:4000/login', { withCredentials: true });
     if (!response) {
@@ -55,7 +55,7 @@ function App() {
 
   useEffect(() => {
     if (isLogin) {  // Avoid calling this before signup
-      fetchUserData(isLogin)
+      fetchUserData()
           .then(setUser)
           .catch((error) => setError(error.message))
           .finally(() => setLoading(false));
