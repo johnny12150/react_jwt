@@ -15,6 +15,8 @@ function createWindow() {
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
 
+    console.log('Chrome version:', process.versions.chrome);
+
     mainWindow.loadURL(`file://${path.join(__dirname, "/build/index.html")}`);
     // mainWindow.loadURL('http://localhost:3000');
 
