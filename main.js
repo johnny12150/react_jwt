@@ -12,7 +12,14 @@ function createWindow() {
         }
     });
 
+    // Open the DevTools.
+    mainWindow.webContents.openDevTools();
+
+    console.log('Chrome version:', process.versions.chrome);
+
+    // to set cookie with file protocol, secure and sameSite need to be set in backend
     mainWindow.loadURL(`file://${path.join(__dirname, "/build/index.html")}`);
+
     // mainWindow.loadURL('http://localhost:3000');
 
     mainWindow.on("closed", () => (mainWindow = null));

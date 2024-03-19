@@ -1,14 +1,16 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const fetchLogin = async () => {
   try {
-    // add {credentials: 'include'} to set cookie
-    const response = await fetch('http://localhost:4000/test_signup', {credentials: 'include'});
-    if (!response.ok) {
+    // add { withCredentials: true } to set cookie
+    const response = await axios('http://localhost:4000/test_signup', { withCredentials: true });
+    if (!response) {
       throw new Error('Network response was not ok');
     }
-    const token = await response.json();
+    const token = await response.data;
+    console.log(response.headers['set-cookie']);  // check cookie exist
     return 'token' in token;
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error);
@@ -16,13 +18,13 @@ const fetchLogin = async () => {
   }
 };
 
-const fetchUserData = async (isLogin: boolean) => {
+const fetchUserData = async () => {
   try {
-    const response = await fetch('http://localhost:4000/login', {credentials: 'include'});
-    if (!response.ok) {
+    const response = await axios('http://localhost:4000/login', { withCredentials: true });
+    if (!response) {
       throw new Error('Network response was not ok');
     }
-    const user_data = await response.json();
+    const user_data = await response.data;
     return user_data.res_;
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error);
@@ -53,7 +55,7 @@ function App() {
 
   useEffect(() => {
     if (isLogin) {  // Avoid calling this before signup
-      fetchUserData(isLogin)
+      fetchUserData()
           .then(setUser)
           .catch((error) => setError(error.message))
           .finally(() => setLoading(false));
